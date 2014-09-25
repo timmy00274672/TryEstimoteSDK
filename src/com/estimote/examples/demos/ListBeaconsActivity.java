@@ -77,7 +77,7 @@ public class ListBeaconsActivity extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.scan_menu, menu);
     MenuItem refreshItem = menu.findItem(R.id.refresh);
-//    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
     return true;
   }
 
