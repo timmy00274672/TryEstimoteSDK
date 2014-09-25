@@ -45,6 +45,10 @@
     <activity android:name="com.estimote.examples.demos.CharacteristicsDemoActivity"
               android:label="Characteristics Demo"
               android:screenOrientation="portrait"/>
+    
+    <activity android:name="com.estimote.examples.demos.DipProjectActivity"
+              android:label="DipProjectActivity"
+              android:screenOrientation="portrait"/>
 
     <!-- Estimote service responsible for scanning beacons. -->
     <service android:name="com.estimote.sdk.service.BeaconService"

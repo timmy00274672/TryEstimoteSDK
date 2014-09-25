@@ -77,7 +77,7 @@ public class ListBeaconsActivity extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.scan_menu, menu);
     MenuItem refreshItem = menu.findItem(R.id.refresh);
-    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+//    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
     return true;
   }
 
@@ -85,8 +85,12 @@ public class ListBeaconsActivity extends Activity {
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == android.R.id.home) {
       finish();
+      
       return true;
-    }
+    }else if (item.getItemId() == R.id.refresh) {
+        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+        return true;
+      }
     return super.onOptionsItemSelected(item);
   }
 
