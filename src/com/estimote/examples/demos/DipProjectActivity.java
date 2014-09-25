@@ -12,9 +12,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.xmlpull.v1.XmlSerializer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +53,15 @@ public class DipProjectActivity extends Activity {
 	private Button buttonUpload;
 	private TextView textViewUploadMsg;
 	private EditText editTextPosition;
+	private String resultString;
+
+	@SuppressLint("HandlerLeak")
+	private Handler messageHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			textViewUploadMsg.append("\n" + resultString);
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +85,7 @@ public class DipProjectActivity extends Activity {
 		beaconManager = new BeaconManager(this);
 		beaconManager.setRangingListener(new RangingListener() {
 			private int count = 1;
+
 			@Override
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
 				Log.d(TAG, beacons.toString());
@@ -103,76 +115,75 @@ public class DipProjectActivity extends Activity {
 	}
 
 	private void upload(List<MyBeacon> beaconList2, int position) {
-		// TODO use handler to do so
-		{
-			final String translateToXmlString = translateToXmlString(beaconList2,
-					position);
-			Toast.makeText(this, translateToXmlString, Toast.LENGTH_LONG)
-					.show();
-			String response = "";
-			Log.d(TAG, translateToXmlString);
-			HandlerThread mHandlerThread = new HandlerThread("upload");
-			mHandlerThread.start();
-			Handler handler = new Handler(mHandlerThread.getLooper());
-			handler.post(new Runnable() {
-				
-				@Override
-				public void run() {
-					try {
-						HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(
-								"http://140.116.179.11/BT_project/BT_offline.php")
-								.openConnection();
-						httpUrlConnection.setConnectTimeout(20000);
-						httpUrlConnection.setDoOutput(true);
-						httpUrlConnection.setRequestMethod("POST");
-						httpUrlConnection
-								.setRequestProperty("Connection", "Keep-Alive");
-						httpUrlConnection.connect();
+		final String translateToXmlString = translateToXmlString(beaconList2,
+				position);
+		Log.d(TAG, translateToXmlString);
+		HandlerThread mHandlerThread = new HandlerThread("upload");
+		mHandlerThread.start();
+		Handler handler = new Handler(mHandlerThread.getLooper());
+		handler.post(new Runnable() {
 
-						OutputStream os = httpUrlConnection.getOutputStream();
+			@Override
+			public void run() {
+				try {
 
-						InputStream fis = new ByteArrayInputStream(
-								translateToXmlString.getBytes("UTF-8"));
+					String response = "";
 
-						byte[] temp = new byte[1024 * 4]; // the common size of Internet
-						// transmission
-						int count;
+					HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(
+							"http://140.116.179.11/BT_project/BT_offline.php")
+							.openConnection();
+					httpUrlConnection.setConnectTimeout(20000);
+					httpUrlConnection.setDoOutput(true);
+					httpUrlConnection.setRequestMethod("POST");
+					httpUrlConnection.setRequestProperty("Connection",
+							"Keep-Alive");
+					httpUrlConnection.connect();
 
-						while ((count = fis.read(temp)) != -1) { // if the xmlFile is
-																	// read over,
-																	// return-1
-							os.write(temp, 0, count);
-						}
-						os.close();
+					OutputStream os = httpUrlConnection.getOutputStream();
 
-						BufferedReader in = new BufferedReader(new InputStreamReader(
-								httpUrlConnection.getInputStream()));
-						String buf = null;
+					InputStream fis = new ByteArrayInputStream(
+							translateToXmlString.getBytes("UTF-8"));
 
-						while ((buf = in.readLine()) != null) {
-							Log.e(TAG,buf);
-//							response = response + buf + "\n";
-						}
-						
-						in.close();
-						fis.close();
+					byte[] temp = new byte[1024 * 4]; // the common size of
+														// Internet
+					// transmission
+					int count;
 
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					while ((count = fis.read(temp)) != -1) { // if the xmlFile
+																// is
+																// read over,
+																// return-1
+						os.write(temp, 0, count);
 					}
-				}
-			});
-			
-			
-		}
+					os.close();
 
+					BufferedReader in = new BufferedReader(
+							new InputStreamReader(httpUrlConnection
+									.getInputStream()));
+					String buf = null;
+
+					while ((buf = in.readLine()) != null) {
+						Log.e(TAG, buf);
+						response = response + buf + "\n";
+					}
+
+					in.close();
+					fis.close();
+
+					resultString = response;
+					messageHandler.sendEmptyMessage(0);
+
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		this.beaconList = new ArrayList<MyBeacon>();
 		changeNumInTextViewNumber(0);
 		changeNumInTextViewUploadMsg(beaconList2.size(), position);
+		textViewUploadMsg.append("\n" + translateToXmlString);
 	}
 
 	private static String translateToXmlString(List<MyBeacon> beaconList2,
@@ -211,7 +222,7 @@ public class DipProjectActivity extends Activity {
 							serializer.startTag("", "Scan_Id");
 							serializer.text(beacon.scan + "");
 							serializer.endTag("", "Scan_Id");
-							
+
 							serializer.startTag("", "RSS");
 							serializer.text(beacon.beacon.getRssi() + "");
 							serializer.endTag("", "RSS");
@@ -234,13 +245,14 @@ public class DipProjectActivity extends Activity {
 	}
 
 	private void changeNumInTextViewUploadMsg(int size, int position) {
-		CharSequence msg = String.format(
+		CharSequence msg = String.format(Locale.TAIWAN,
 				"There are %d beacons upload at position %d", size, position);
 		textViewUploadMsg.setText(msg);
 	}
 
 	private void changeNumInTextViewNumber(int size) {
-		CharSequence msg = String.format("There are %d beacons", size);
+		CharSequence msg = String.format(Locale.TAIWAN, "There are %d beacons",
+				size);
 		textViewNumber.setText(msg);
 	}
 
