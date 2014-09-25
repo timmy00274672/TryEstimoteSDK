@@ -46,7 +46,7 @@ public class DipProjectActivity extends Activity {
 	private BeaconManager beaconManager;
 	private boolean serviceRun = false;
 	private Button buttonRun;
-	private List<Beacon> beaconList = new ArrayList<Beacon>();
+	private List<MyBeacon> beaconList = new ArrayList<MyBeacon>();
 	private TextView textViewNumber;
 	private Button buttonUpload;
 	private TextView textViewUploadMsg;
@@ -73,11 +73,14 @@ public class DipProjectActivity extends Activity {
 
 		beaconManager = new BeaconManager(this);
 		beaconManager.setRangingListener(new RangingListener() {
-
+			private int count = 1;
 			@Override
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
 				Log.d(TAG, beacons.toString());
-				beaconList.addAll(beacons);
+				for (Beacon beacon : beacons) {
+					beaconList.add(new MyBeacon(beacon, count));
+				}
+				count++;
 				changeNumInTextViewNumber(beaconList.size());
 			}
 		});
@@ -99,10 +102,10 @@ public class DipProjectActivity extends Activity {
 		return Integer.parseInt(editTextPosition.getText().toString());
 	}
 
-	private void upload(List<Beacon> beaconList, int position) {
+	private void upload(List<MyBeacon> beaconList2, int position) {
 		// TODO use handler to do so
 		{
-			final String translateToXmlString = translateToXmlString(beaconList,
+			final String translateToXmlString = translateToXmlString(beaconList2,
 					position);
 			Toast.makeText(this, translateToXmlString, Toast.LENGTH_LONG)
 					.show();
@@ -167,12 +170,12 @@ public class DipProjectActivity extends Activity {
 			
 		}
 
-		this.beaconList = new ArrayList<Beacon>();
+		this.beaconList = new ArrayList<MyBeacon>();
 		changeNumInTextViewNumber(0);
-		changeNumInTextViewUploadMsg(beaconList.size(), position);
+		changeNumInTextViewUploadMsg(beaconList2.size(), position);
 	}
 
-	private static String translateToXmlString(List<Beacon> beaconList,
+	private static String translateToXmlString(List<MyBeacon> beaconList2,
 			int position) {
 
 		XmlSerializer serializer = Xml.newSerializer();
@@ -198,19 +201,19 @@ public class DipProjectActivity extends Activity {
 				 */
 				serializer.startTag("", "Bluetooth");
 				{
-					for (Beacon beacon : beaconList) {
+					for (MyBeacon beacon : beaconList2) {
 						serializer.startTag("", "BeaconRecord");
 						{
 							serializer.startTag("", "Mac_Address");
-							serializer.text(beacon.getMacAddress());
+							serializer.text(beacon.beacon.getMacAddress());
 							serializer.endTag("", "Mac_Address");
 
 							serializer.startTag("", "Scan_Id");
-							serializer.text(1 + "");
+							serializer.text(beacon.scan + "");
 							serializer.endTag("", "Scan_Id");
 							
 							serializer.startTag("", "RSS");
-							serializer.text(beacon.getRssi() + "");
+							serializer.text(beacon.beacon.getRssi() + "");
 							serializer.endTag("", "RSS");
 						}
 						serializer.endTag("", "BeaconRecord");
