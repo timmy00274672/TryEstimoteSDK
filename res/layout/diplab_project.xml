@@ -5,11 +5,41 @@
     android:clickable="false"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/runButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="Not Ready Now" />
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/buttonRun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Not Ready Now" />
+
+        <TextView
+            android:id="@+id/textViewNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No data" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/buttonUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="upload" />
+
+        <TextView
+            android:id="@+id/textViewUploadMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not upload yet" />
+
+    </LinearLayout>
 
 </LinearLayout>
