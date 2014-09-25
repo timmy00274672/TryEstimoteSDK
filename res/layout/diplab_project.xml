@@ -28,6 +28,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
+        <EditText
+            android:id="@+id/editTextPosition"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0" >
+
+            <requestFocus />
+        </EditText>
+
         <Button
             android:id="@+id/buttonUpload"
             android:layout_width="wrap_content"

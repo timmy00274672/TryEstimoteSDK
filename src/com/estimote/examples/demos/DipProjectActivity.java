@@ -1,18 +1,21 @@
 package com.estimote.examples.demos;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+
+import org.xmlpull.v1.XmlSerializer;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
+import android.util.Xml;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ public class DipProjectActivity extends Activity {
 	private TextView textViewNumber;
 	private Button buttonUpload;
 	private TextView textViewUploadMsg;
+	private EditText editTextPosition;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,23 +75,82 @@ public class DipProjectActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				upload(beaconList);
+				upload(beaconList, getPositionInput());
 			}
 		});
 
 		textViewUploadMsg = (TextView) findViewById(R.id.textViewUploadMsg);
-
+		editTextPosition = (EditText) findViewById(R.id.editTextPosition);
 	}
 
-	private void upload(List<Beacon> beaconList) {
+	private int getPositionInput() {
+		return Integer.parseInt(editTextPosition.getText().toString());
+	}
+
+	private void upload(List<Beacon> beaconList, int position) {
 		// TODO use handler to do so
+		{
+			XmlSerializer serializer = Xml.newSerializer();
+			StringWriter writer = new StringWriter();
+			try {
+				serializer.setOutput(writer);
+				serializer.startDocument("UTF-8", true);
+				serializer.startTag("", "data");
+
+				{
+					// <RP_Id>1</RP_Id>
+					serializer.startTag("", "RP_Id");
+					serializer.text(position + "");
+					serializer.endTag("", "RP_Id");
+
+					/*
+					 * <Bluetooth> <BeaconRecord>
+					 * <Mac_Address>DF:81:E2:C5:A2:BA</Mac_Address>
+					 * <RSS>-79</RSS> <Scan_Id>1</Scan_Id> </BeaconRecord>
+					 * <BeaconRecord>
+					 * <Mac_Address>F6:CC:5E:1A:67:43</Mac_Address>
+					 * <RSS>-83</RSS> <Scan_Id>1</Scan_Id> </BeaconRecord>
+					 * </Bluetooth>
+					 */
+					serializer.startTag("", "Bluetooth");
+					{
+						for (Beacon beacon : beaconList) {
+							serializer.startTag("", "BeaconRecord");
+							{
+								serializer.startTag("", "Mac_Address");
+								serializer.text(beacon.getMacAddress());
+								serializer.endTag("", "Mac_Address");
+								
+								serializer.startTag("", "RSS");
+								serializer.text(beacon.getRssi()+"");
+								serializer.endTag("", "RSS");
+							}
+							serializer.endTag("", "BeaconRecord");
+						}
+
+					}
+					serializer.endTag("", "Bluetooth");
+
+				}
+
+				serializer.endTag("", "data");
+				serializer.endDocument();
+				Toast.makeText(this, writer.toString(), Toast.LENGTH_LONG)
+						.show();
+				Log.d(TAG, writer.toString());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 		this.beaconList = new ArrayList<Beacon>();
 		changeNumInTextViewNumber(0);
-		changeNumInTextViewUploadMsg(beaconList.size());
+		changeNumInTextViewUploadMsg(beaconList.size(), position);
 	}
 
-	private void changeNumInTextViewUploadMsg(int size) {
-		CharSequence msg = String.format("There are %d beacons upload", size);
+	private void changeNumInTextViewUploadMsg(int size, int position) {
+		CharSequence msg = String.format(
+				"There are %d beacons upload at position %d", size, position);
 		textViewUploadMsg.setText(msg);
 	}
 
