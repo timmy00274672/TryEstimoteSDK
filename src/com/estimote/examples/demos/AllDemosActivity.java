@@ -50,5 +50,13 @@ public class AllDemosActivity extends Activity {
           startActivity(intent);
         }
       });
+    findViewById(R.id.my_project_online).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent intent = new Intent(AllDemosActivity.this, DipOnlineActivity.class);
+//          intent.putExtra(ListBeaconsActivity.EXTRAS_TARGET_ACTIVITY, CharacteristicsDemoActivity.class.getName());
+          startActivity(intent);
+        }
+      });
   }
 }

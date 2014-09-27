@@ -1,5 +1,6 @@
 package com.estimote.examples.demos;
 
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -39,11 +40,11 @@ import com.estimote.sdk.BeaconManager.RangingListener;
 import com.estimote.sdk.BeaconManager.ServiceReadyCallback;
 import com.estimote.sdk.Region;
 
-public class DipProjectActivity extends Activity {
+public class DipOnlineActivity extends Activity {
 
 	protected static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region(
 			"rid", null, null, null);;
-	protected static final String TAG = DipProjectActivity.class
+	protected static final String TAG = DipOnlineActivity.class
 			.getSimpleName();
 	private BeaconManager beaconManager;
 	private boolean serviceRun = false;
@@ -68,41 +69,29 @@ public class DipProjectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		// set the view and actionbar and initialize the object in the view
-		setContentView(R.layout.diplab_project);
+		setContentView(R.layout.diplab_online);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		buttonRun = (Button) findViewById(R.id.buttonRunOffline);
+		buttonRun = (Button) findViewById(R.id.buttonRunOnline);
 		buttonRun.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				toggleService();
+				startRanging();
 			}
 		});
 
-		textViewNumber = (TextView) findViewById(R.id.textViewNumber);
-
 		beaconManager = new BeaconManager(this);
 		beaconManager.setRangingListener(new RangingListener() {
-			private int count = 1;
 
 			@Override
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
 				Log.d(TAG, beacons.toString());
 				for (Beacon beacon : beacons) {
-					beaconList.add(new MyBeacon(beacon, count));
+					beaconList.add(new MyBeacon(beacon, 1));
 				}
-				count++;
-				changeNumInTextViewNumber(beaconList.size());
-			}
-		});
-
-		buttonUpload = (Button) findViewById(R.id.buttonUpload);
-		buttonUpload.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				upload(beaconList, getPositionInput());
+				stopRanging();
+				upload(beaconList);
 			}
 		});
 
@@ -114,9 +103,8 @@ public class DipProjectActivity extends Activity {
 		return Integer.parseInt(editTextPosition.getText().toString());
 	}
 
-	private void upload(List<MyBeacon> beaconList2, int position) {
-		final String translateToXmlString = translateToXmlString(beaconList2,
-				position);
+	private void upload(List<MyBeacon> beaconList2) {
+		final String translateToXmlString = translateToXmlString(beaconList2);
 		Log.d(TAG, translateToXmlString);
 		HandlerThread mHandlerThread = new HandlerThread("upload");
 		mHandlerThread.start();
@@ -130,7 +118,7 @@ public class DipProjectActivity extends Activity {
 					String response = "";
 
 					HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(
-							"http://140.116.179.11/BT_project/BT_offline.php")
+							"http://140.116.179.11/BT_project/BT_online.php")
 							.openConnection();
 					httpUrlConnection.setConnectTimeout(20000);
 					httpUrlConnection.setDoOutput(true);
@@ -181,13 +169,10 @@ public class DipProjectActivity extends Activity {
 			}
 		});
 		this.beaconList = new ArrayList<MyBeacon>();
-		changeNumInTextViewNumber(0);
-		changeNumInTextViewUploadMsg(beaconList2.size(), position);
 		textViewUploadMsg.append("\n" + translateToXmlString);
 	}
 
-	public static String translateToXmlString(List<MyBeacon> beaconList2,
-			int position) {
+	public static String translateToXmlString(List<MyBeacon> beaconList2) {
 
 		XmlSerializer serializer = Xml.newSerializer();
 		StringWriter writer = new StringWriter();
@@ -198,10 +183,6 @@ public class DipProjectActivity extends Activity {
 			serializer.startTag("", "data");
 
 			{
-				// <RP_Id>1</RP_Id>
-				serializer.startTag("", "RP_Id");
-				serializer.text(position + "");
-				serializer.endTag("", "RP_Id");
 
 				/*
 				 * <Bluetooth> <BeaconRecord>
@@ -244,18 +225,6 @@ public class DipProjectActivity extends Activity {
 		return writer.toString();
 	}
 
-	private void changeNumInTextViewUploadMsg(int size, int position) {
-		CharSequence msg = String.format(Locale.TAIWAN,
-				"There are %d beacons upload at position %d", size, position);
-		textViewUploadMsg.setText(msg);
-	}
-
-	private void changeNumInTextViewNumber(int size) {
-		CharSequence msg = String.format(Locale.TAIWAN, "There are %d beacons",
-				size);
-		textViewNumber.setText(msg);
-	}
-
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -263,7 +232,7 @@ public class DipProjectActivity extends Activity {
 
 			@Override
 			public void onServiceReady() {
-				Toast.makeText(DipProjectActivity.this, "Serivce is Ready",
+				Toast.makeText(DipOnlineActivity.this, "Serivce is Ready",
 						Toast.LENGTH_SHORT).show();
 				buttonRun.setText("START Service");
 				buttonRun.setEnabled(true);
@@ -321,7 +290,7 @@ public class DipProjectActivity extends Activity {
 		try {
 			beaconManager.startRanging(ALL_ESTIMOTE_BEACONS_REGION);
 		} catch (RemoteException e) {
-			Toast.makeText(DipProjectActivity.this,
+			Toast.makeText(DipOnlineActivity.this,
 					"Cannot start ranging, something terrible happened",
 					Toast.LENGTH_LONG).show();
 			Log.e(TAG, "Cannot start ranging", e);

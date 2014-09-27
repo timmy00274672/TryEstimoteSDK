@@ -11,39 +11,16 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/buttonRunOffline"
+            android:id="@+id/buttonRunOnline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="Not Ready Now" />
-
-        <TextView
-            android:id="@+id/textViewNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No data" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
-        <EditText
-            android:id="@+id/editTextPosition"
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:text="0" >
-
-            <requestFocus />
-        </EditText>
-
-        <Button
-            android:id="@+id/buttonUpload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="upload" />
 
     </LinearLayout>
 
