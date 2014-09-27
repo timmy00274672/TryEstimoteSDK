@@ -222,7 +222,7 @@ public class DipOnlineActivity extends Activity {
 			public void onServiceReady() {
 				Toast.makeText(DipOnlineActivity.this, "Serivce is Ready",
 						Toast.LENGTH_SHORT).show();
-				buttonRun.setText("START Service");
+				buttonRun.setText(getString(R.string.string_start_service));
 				buttonRun.setEnabled(true);
 			}
 		});

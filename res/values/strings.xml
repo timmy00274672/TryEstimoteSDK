@@ -9,4 +9,6 @@
     <string name="string_for_button_online">Diplab_online</string>
     <string name="string_offline_url">http://140.116.179.11/BT_project/BT_offline.php</string>
     <string name="string_online_url">http://140.116.179.11/BT_project/BT_online.php</string>
+    <string name="string_start_service">START Service</string>
+    <string name="string_stop_service">STOP Service</string>
 </resources>

@@ -265,7 +265,7 @@ public class DipOfflineActivity extends Activity {
 			public void onServiceReady() {
 				Toast.makeText(DipOfflineActivity.this, "Serivce is Ready",
 						Toast.LENGTH_SHORT).show();
-				buttonRun.setText("START Service");
+				buttonRun.setText(getString(R.string.string_start_service));
 				buttonRun.setEnabled(true);
 			}
 		});
@@ -309,11 +309,11 @@ public class DipOfflineActivity extends Activity {
 			// CharSequence msg = String.format("There are %d beacons",
 			// beaconList.size());
 			// Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-			buttonRun.setText("START Service");
+			buttonRun.setText(getString(R.string.string_start_service));
 		} else {
 			startRanging();
 			serviceRun = true;
-			buttonRun.setText("STOP Service");
+			buttonRun.setText(getString(R.string.string_stop_service));
 		}
 	}
 
