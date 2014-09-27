@@ -39,11 +39,11 @@ import com.estimote.sdk.BeaconManager.RangingListener;
 import com.estimote.sdk.BeaconManager.ServiceReadyCallback;
 import com.estimote.sdk.Region;
 
-public class DipProjectActivity extends Activity {
+public class DipOfflineActivity extends Activity {
 
 	protected static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region(
 			"rid", null, null, null);;
-	protected static final String TAG = DipProjectActivity.class
+	protected static final String TAG = DipOfflineActivity.class
 			.getSimpleName();
 	private BeaconManager beaconManager;
 	private boolean serviceRun = false;
@@ -68,7 +68,7 @@ public class DipProjectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		// set the view and actionbar and initialize the object in the view
-		setContentView(R.layout.diplab_project);
+		setContentView(R.layout.diplab_offline);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		buttonRun = (Button) findViewById(R.id.buttonRunOffline);
@@ -130,7 +130,7 @@ public class DipProjectActivity extends Activity {
 					String response = "";
 
 					HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(
-							"http://140.116.179.11/BT_project/BT_offline.php")
+							getString(R.string.string_offline_url))
 							.openConnection();
 					httpUrlConnection.setConnectTimeout(20000);
 					httpUrlConnection.setDoOutput(true);
@@ -263,7 +263,7 @@ public class DipProjectActivity extends Activity {
 
 			@Override
 			public void onServiceReady() {
-				Toast.makeText(DipProjectActivity.this, "Serivce is Ready",
+				Toast.makeText(DipOfflineActivity.this, "Serivce is Ready",
 						Toast.LENGTH_SHORT).show();
 				buttonRun.setText("START Service");
 				buttonRun.setEnabled(true);
@@ -321,7 +321,7 @@ public class DipProjectActivity extends Activity {
 		try {
 			beaconManager.startRanging(ALL_ESTIMOTE_BEACONS_REGION);
 		} catch (RemoteException e) {
-			Toast.makeText(DipProjectActivity.this,
+			Toast.makeText(DipOfflineActivity.this,
 					"Cannot start ranging, something terrible happened",
 					Toast.LENGTH_LONG).show();
 			Log.e(TAG, "Cannot start ranging", e);

@@ -1,0 +1,12 @@
+<resources>
+    <string name="string_not_ready">Not Ready Now</string>
+    <string name="string_not_upload">Not upload yet</string>
+    <string name="string_default_position">0</string>
+    <string name="string_upload">Upload</string>
+    <string name="sting_no_data">No data</string>
+    <string name="string_hint_for_position_input">Input the position</string>
+    <string name="string_for_button_offline">Diplab_offline</string>
+    <string name="string_for_button_online">Diplab_online</string>
+    <string name="string_offline_url">http://140.116.179.11/BT_project/BT_offline.php</string>
+    <string name="string_online_url">http://140.116.179.11/BT_project/BT_online.php</string>
+</resources>

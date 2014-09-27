@@ -15,13 +15,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Not Ready Now" />
+            android:text="@string/string_not_ready" />
 
         <TextView
             android:id="@+id/textViewNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No data" />
+            android:text="@string/sting_no_data" />
     </LinearLayout>
 
     <LinearLayout
@@ -34,7 +34,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:text="0" >
+            android:text="@string/string_default_position"
+            android:hint="@string/string_hint_for_position_input"
+             >
 
             <requestFocus />
         </EditText>
@@ -43,7 +45,7 @@
             android:id="@+id/buttonUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="upload" />
+            android:text="@string/string_upload" />
 
     </LinearLayout>
 
@@ -52,6 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        android:text="Not upload yet" />
+        android:text="@string/string_not_upload" />
 
 </LinearLayout>

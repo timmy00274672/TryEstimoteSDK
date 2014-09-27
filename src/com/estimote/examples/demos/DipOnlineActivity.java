@@ -1,6 +1,5 @@
 package com.estimote.examples.demos;
 
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -42,8 +41,7 @@ public class DipOnlineActivity extends Activity {
 
 	protected static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region(
 			"rid", null, null, null);;
-	protected static final String TAG = DipOnlineActivity.class
-			.getSimpleName();
+	protected static final String TAG = DipOnlineActivity.class.getSimpleName();
 	private BeaconManager beaconManager;
 	private Button buttonRun;
 	private List<MyBeacon> beaconList = new ArrayList<MyBeacon>();
@@ -108,7 +106,7 @@ public class DipOnlineActivity extends Activity {
 					String response = "";
 
 					HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(
-							"http://140.116.179.11/BT_project/BT_online.php")
+							getString(R.string.string_online_url))
 							.openConnection();
 					httpUrlConnection.setConnectTimeout(20000);
 					httpUrlConnection.setDoOutput(true);

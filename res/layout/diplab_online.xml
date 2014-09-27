@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Not Ready Now" />
+            android:text="@string/string_not_ready" />
     </LinearLayout>
 
 
@@ -24,6 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        android:text="Not upload yet" />
+        android:text="@string/string_not_upload" />
 
 </LinearLayout>

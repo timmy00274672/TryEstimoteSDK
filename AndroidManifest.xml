@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="18"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="22" />
 
     <!-- Needed permissions in order to scan for beacons. -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -20,7 +20,7 @@
 
     <application
         android:label="Estimote Demos"
-        android:theme="@android:style/Theme.Holo.Light" >
+        android:theme="@android:style/Theme.Holo.Light" android:icon="@drawable/ic_launcher" android:allowBackup="true">
         <activity
             android:name="com.estimote.examples.demos.AllDemosActivity"
             android:label="Estimote Demos"
@@ -48,7 +48,7 @@
             android:label="Characteristics Demo"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.estimote.examples.demos.DipProjectActivity"
+            android:name="com.estimote.examples.demos.DipOfflineActivity"
             android:label="DipProjectActivity"
             android:screenOrientation="portrait" />
         <activity

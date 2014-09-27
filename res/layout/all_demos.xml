@@ -5,33 +5,15 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/distance_demo_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Distance Demo" />
-
-    <Button
-        android:id="@+id/notify_demo_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Notify Demo" />
-
-    <Button
-        android:id="@+id/characteristics_demo_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Change Beacon&apos;s Minor Demo" />
-
-    <Button
         android:id="@+id/my_project"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Diplab" />
+        android:text="@string/string_for_button_offline" />
 
     <Button
         android:id="@+id/my_project_online"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Diplab_online" />
+        android:text="@string/string_for_button_online" />
 
 </LinearLayout>
