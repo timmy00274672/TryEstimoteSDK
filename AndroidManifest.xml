@@ -32,22 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.estimote.examples.demos.ListBeaconsActivity"
-            android:label="Select Beacon"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.estimote.examples.demos.DistanceBeaconActivity"
-            android:label="Distance Demo"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.estimote.examples.demos.NotifyDemoActivity"
-            android:label="Notify Demo"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.estimote.examples.demos.CharacteristicsDemoActivity"
-            android:label="Characteristics Demo"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.estimote.examples.demos.DipOfflineActivity"
             android:label="DipProjectActivity"
             android:screenOrientation="portrait" />
