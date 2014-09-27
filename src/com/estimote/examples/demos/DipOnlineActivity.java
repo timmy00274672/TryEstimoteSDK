@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -30,7 +29,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,13 +45,9 @@ public class DipOnlineActivity extends Activity {
 	protected static final String TAG = DipOnlineActivity.class
 			.getSimpleName();
 	private BeaconManager beaconManager;
-	private boolean serviceRun = false;
 	private Button buttonRun;
 	private List<MyBeacon> beaconList = new ArrayList<MyBeacon>();
-	private TextView textViewNumber;
-	private Button buttonUpload;
 	private TextView textViewUploadMsg;
-	private EditText editTextPosition;
 	private String resultString;
 
 	@SuppressLint("HandlerLeak")
@@ -81,6 +75,8 @@ public class DipOnlineActivity extends Activity {
 			}
 		});
 
+		textViewUploadMsg = (TextView) findViewById(R.id.textViewUploadMsg);
+
 		beaconManager = new BeaconManager(this);
 		beaconManager.setRangingListener(new RangingListener() {
 
@@ -95,12 +91,6 @@ public class DipOnlineActivity extends Activity {
 			}
 		});
 
-		textViewUploadMsg = (TextView) findViewById(R.id.textViewUploadMsg);
-		editTextPosition = (EditText) findViewById(R.id.editTextPosition);
-	}
-
-	private int getPositionInput() {
-		return Integer.parseInt(editTextPosition.getText().toString());
 	}
 
 	private void upload(List<MyBeacon> beaconList2) {
@@ -269,21 +259,6 @@ public class DipOnlineActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void toggleService() {
-		if (serviceRun) {
-			stopRanging();
-			serviceRun = false;
-			// CharSequence msg = String.format("There are %d beacons",
-			// beaconList.size());
-			// Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-			buttonRun.setText("START Service");
-		} else {
-			startRanging();
-			serviceRun = true;
-			buttonRun.setText("STOP Service");
-		}
 	}
 
 	private void startRanging() {
