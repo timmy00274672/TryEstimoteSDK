@@ -52,7 +52,7 @@ public class DipOnlineActivity extends Activity {
 	private Handler messageHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			textViewUploadMsg.append("\n" + resultString);
+			textViewUploadMsg.setText(resultString);
 		}
 	};
 
@@ -88,7 +88,10 @@ public class DipOnlineActivity extends Activity {
 					scanNum++;
 				}
 //				stopRanging();
-				upload(beaconList);
+				if(scanNum >= 3){
+					upload(beaconList);
+					scanNum = 1;
+				}
 			}
 		});
 
