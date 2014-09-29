@@ -77,14 +77,17 @@ public class DipOnlineActivity extends Activity {
 
 		beaconManager = new BeaconManager(this);
 		beaconManager.setRangingListener(new RangingListener() {
+			
+			int scanNum = 1;
 
 			@Override
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
 				Log.d(TAG, beacons.toString());
 				for (Beacon beacon : beacons) {
-					beaconList.add(new MyBeacon(beacon, 1));
+					beaconList.add(new MyBeacon(beacon, scanNum));
+					scanNum++;
 				}
-				stopRanging();
+//				stopRanging();
 				upload(beaconList);
 			}
 		});

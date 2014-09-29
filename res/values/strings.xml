@@ -11,4 +11,5 @@
     <string name="string_online_url">http://140.116.179.11/BT_project/BT_online.php</string>
     <string name="string_start_service">START Service</string>
     <string name="string_stop_service">STOP Service</string>
+    <string name="string_online_background_description">ES1F</string>
 </resources>
